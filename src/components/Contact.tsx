@@ -265,6 +265,10 @@ ${name}${lastUpdatedField === "name" ? (cursorBlink ? "|" : " ") : ""}
                   required
                   name="checkbox-label"
                   id="checkbox-label"
+                  onInvalid={() => {
+                    language === "ES" ? toast.error(toastMessages.failedCheckbox.es)
+                      : toast.error(toastMessages.failedCheckbox.en)
+                  }}
                 />
                 <span className="checkbox"></span>
               </label>

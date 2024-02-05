@@ -341,6 +341,10 @@ export const toastMessages = {
     es: "Por favor, ponga su nombre",
     en: "Please fill in your name",
   },
+  failedCheckbox: {
+    es: "Debe aceptar los términos y condiciones para continuar",
+    en: "You must accept the terms and conditions to continue",
+  },
 } as const;
 
 export const buttonLabels = {
