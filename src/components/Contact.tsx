@@ -18,6 +18,7 @@ const Contact: React.FC = () => {
   const [subject, setSubject] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [cursor, setCursor] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const [lastUpdatedField, setLastUpdatedField] = useState<string | null>(null);
   const { ref } = useSectionInView("Contact");
   const { language } = useLanguage();
@@ -33,12 +34,13 @@ const Contact: React.FC = () => {
   const opacityProgess = useTransform(scrollYProgress, [0, 1], [0.6, 1]);
 
   const notifySentForm: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    if (loading) return;
     setError(null);
     console.log(error);
 
-    e.preventDefault();
-
     try {
+      setLoading(true);
       await axios.post(`${apiBaseUrl}/send`, { name, email, subject, message });
       if (language === "ES") {
         toast.success(toastMessages.successEmailSent.es);
@@ -53,6 +55,8 @@ const Contact: React.FC = () => {
         toast.error(toastMessages.failedEmailSent.en);
       }
       setError("An Error occured, try again later");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -123,21 +127,17 @@ import  { useState } from "react";
 // 🌈 Spreading Stardust: 
 // Crafting Cosmic Email 🌌
 
-const [sender, setSender] = "${name}${
-    lastUpdatedField === "name" ? (cursorBlink ? "|" : " ") : ""
-  }🚀";
-const [recipient, setRecipient] = \n"${email}${
-    lastUpdatedField === "email" ? (cursorBlink ? "|" : " ") : ""
-  }📧";
-const [subject, setSubject] = \n"${subject}${
-    lastUpdatedField === "subject" ? (cursorBlink ? "|" : " ") : ""
-  }✨";
+const [sender, setSender] = "${name}${lastUpdatedField === "name" ? (cursorBlink ? "|" : " ") : ""
+    }🚀";
+const [recipient, setRecipient] = \n"${email}${lastUpdatedField === "email" ? (cursorBlink ? "|" : " ") : ""
+    }📧";
+const [subject, setSubject] = \n"${subject}${lastUpdatedField === "subject" ? (cursorBlink ? "|" : " ") : ""
+    }✨";
 const [message, setMessage] = 
 \`Hello, intrepid traveler! 👋\n
 Across the cosmos, a message for you:\n
-"${wordWrap(message, 40, " ")}${
-    lastUpdatedField === "message" ? (cursorBlink ? "|" : " ") : ""
-  }"\n
+"${wordWrap(message, 40, " ")}${lastUpdatedField === "message" ? (cursorBlink ? "|" : " ") : ""
+    }"\n
 Wishing you stardust dreams,\n
 ${name}${lastUpdatedField === "name" ? (cursorBlink ? "|" : " ") : ""}
 \``;
@@ -212,10 +212,10 @@ ${name}${lastUpdatedField === "name" ? (cursorBlink ? "|" : " ") : ""}
                   input.name === "name"
                     ? name
                     : input.name === "email"
-                    ? email
-                    : input.name === "subject"
-                    ? subject
-                    : message
+                      ? email
+                      : input.name === "subject"
+                        ? subject
+                        : message
                 }
                 required
                 onFocus={() => {
@@ -227,11 +227,10 @@ ${name}${lastUpdatedField === "name" ? (cursorBlink ? "|" : " ") : ""}
                   setLastUpdatedField(input.name);
                 }}
                 onChange={handleInputChange}
-                className={`${
-                  theme === "dark"
-                    ? "bg-[--blackblue] dark-mode-shadow "
-                    : "bg-[--icewhite] dark-shadow "
-                }`}
+                className={`${theme === "dark"
+                  ? "bg-[--blackblue] dark-mode-shadow "
+                  : "bg-[--icewhite] dark-shadow "
+                  }`}
               />
             ))}
             <textarea
@@ -251,11 +250,10 @@ ${name}${lastUpdatedField === "name" ? (cursorBlink ? "|" : " ") : ""}
                 setLastUpdatedField(contactData.textarea.name);
               }}
               onChange={handleInputChange}
-              className={`${
-                theme === "dark"
-                  ? "bg-[--blackblue] dark-mode-shadow"
-                  : "bg-[--icewhite] dark-shadow"
-              }`}
+              className={`${theme === "dark"
+                ? "bg-[--blackblue] dark-mode-shadow"
+                : "bg-[--icewhite] dark-shadow"
+                }`}
             />
             <div className="privacy-checkbox flex gap-16">
               <label
@@ -283,9 +281,15 @@ ${name}${lastUpdatedField === "name" ? (cursorBlink ? "|" : " ") : ""}
             </p>
             <Button
               value={
-                language === "ES"
-                  ? `${contactData.button.value.es}`
-                  : `${contactData.button.value.en}`
+                loading ? (
+                  language === "ES"
+                    ? `${toastMessages.sendingEmail.es}`
+                    : `${toastMessages.sendingEmail.en}`
+                ) : (
+                  language === "ES"
+                    ? `${contactData.button.value.es}`
+                    : `${contactData.button.value.en}`
+                )
               }
               iconSVG={contactData.icon}
               buttoncolor={contactData.colors.main}

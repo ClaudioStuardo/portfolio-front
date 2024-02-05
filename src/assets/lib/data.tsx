@@ -333,6 +333,10 @@ export const toastMessages = {
     es: "🚀 Lamentablemente el envío de su correo electrónico no funcionó. Por favor, inténtelo de nuevo más tarde",
     en: "🚀 Unfortunately the sending of your email did not work. Please try again later",
   },
+  sendingEmail: {
+    es: "Cargando...",
+    en: "Loading...",
+  },
   failedValidationName: {
     es: "Por favor, ponga su nombre",
     en: "Please fill in your name",
