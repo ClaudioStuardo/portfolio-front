@@ -9,7 +9,7 @@ import nextjsicon from "../../assets/icons/nextjsicon.svg";
 import nodejsicon from "../../assets/icons/nodejsicon.svg";
 import tailwindcssicon from "../../assets/icons/tailwindicon.svg";
 import mongodbicon from "../../assets/icons/mongoicon.svg";
-import sequelizeicon from "../../assets/icons/sequelizeicon.svg";
+import postgresqlicon from "../../assets/icons/postgresqlicon.svg";
 import expressicon from "../../assets/icons/expressicon.svg";
 import sassscssicon from "../../assets/icons/sassicon.svg";
 import mysqlicon from "../../assets/icons/mysqlicon.svg";
@@ -171,9 +171,9 @@ export const skillsDataDB = [
         color: "#449C45",
       },
       {
-        title: "Sequelize",
-        hash: "#Sequelize",
-        icon: sequelizeicon,
+        title: "PostgreSQL",
+        hash: "#PostgreSQL",
+        icon: postgresqlicon,
         color: "#03AFEF",
       },
       {
